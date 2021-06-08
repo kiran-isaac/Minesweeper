@@ -8,7 +8,7 @@ sys.setrecursionlimit(10000)
 
 squareSize = 30
 
-width, height = 40, 20
+width, height = 5, 5
 winWidth, winHeight = width*squareSize, height*squareSize
 
 noOfMines = math.floor(width * height * 0.15)
@@ -33,7 +33,17 @@ class Board:
     def __init__(self):
         self.board = np.zeros((height, width), int)
         self.visited = np.zeros((height, width), int)
-        self.mines = []
+
+    def look(self):
+        view = np.zeros((height, width))
+        for y in range(height):
+            for x in range(width):
+                if self.visited[y][x] == 1:
+                    view[y][x] = self.board[y][x]
+                    print(self.board[y][x])
+                else:
+                    view[y][x] = -1
+        return view
 
     def setup_game(self):
         b.generate_mines()
@@ -46,7 +56,6 @@ class Board:
             x, y = random.randint(0, width-1), random.randint(0, height-1)
             if not self.board[y][x] == -1:
                 self.board[y][x] = -1
-                self.mines.append((x, y))
                 count += 1
 
     def get_neighbors_of(self, x, y, unvisited = False):
@@ -103,12 +112,10 @@ def left_click(x, y):
             b.flood_uncover(x, y)
         elif b.board[y][x] == -1:
             b.visited = np.ones((height, width), bool)
+    print(b.look())
 
 def right_click(x, y):
-    if b.visited[y][x] == 0:
-        b.visited[y][x] = -1
-    elif b.visited[y][x] == -1:
-        b.visited[y][x] = 0
+    b.visited[y][x] = 0 if b.visited[y][x] == -1 else -1
 
 b = Board()
 b.setup_game()
