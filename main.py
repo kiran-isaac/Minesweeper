@@ -8,7 +8,7 @@ sys.setrecursionlimit(10000)
 
 squareSize = 30
 
-width, height = 5, 5
+width, height = 20, 10
 winWidth, winHeight = width*squareSize, height*squareSize
 
 noOfMines = math.floor(width * height * 0.15)
